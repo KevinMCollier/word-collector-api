@@ -10,9 +10,19 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_11_11_005415) do
+ActiveRecord::Schema[7.0].define(version: 2023_11_11_064906) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "flashcard_tags", force: :cascade do |t|
+    t.bigint "flashcard_id", null: false
+    t.bigint "tag_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["flashcard_id", "tag_id"], name: "index_flashcard_tags_on_flashcard_id_and_tag_id", unique: true
+    t.index ["flashcard_id"], name: "index_flashcard_tags_on_flashcard_id"
+    t.index ["tag_id"], name: "index_flashcard_tags_on_tag_id"
+  end
 
   create_table "flashcards", force: :cascade do |t|
     t.string "title"
@@ -22,6 +32,12 @@ ActiveRecord::Schema[7.0].define(version: 2023_11_11_005415) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_flashcards_on_user_id"
+  end
+
+  create_table "tags", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "users", force: :cascade do |t|
@@ -38,5 +54,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_11_11_005415) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  add_foreign_key "flashcard_tags", "flashcards"
+  add_foreign_key "flashcard_tags", "tags"
   add_foreign_key "flashcards", "users"
 end
