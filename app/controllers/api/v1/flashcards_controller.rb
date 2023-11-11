@@ -4,6 +4,7 @@ class Api::V1::FlashcardsController < Api::V1::BaseController
   def index
     @flashcards = policy_scope(Flashcard)
     # The policy_scope method is part of Pundit and will be used for authorization.
+    render json: @flashcards
   end
 
   def show
