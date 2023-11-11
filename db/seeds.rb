@@ -55,4 +55,5 @@ holiday_flashcards = [
   end
 end
 
+puts "Ho Ho Ho"
 puts "Database seeded successfully!"
