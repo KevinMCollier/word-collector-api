@@ -8,6 +8,9 @@ Rails.application.routes.draw do
   namespace :api, defaults: { format: :json } do
     namespace :v1 do
       resources :flashcards, only: [:index, :show, :create, :update, :destroy]
+      resources :tags, only: [:index, :show, :create, :update, :destroy] do
+        get :autocomplete, on: :collection
+      end
     end
   end
 end
