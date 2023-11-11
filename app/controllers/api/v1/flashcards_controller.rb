@@ -7,11 +7,12 @@ class Api::V1::FlashcardsController < Api::V1::BaseController
   end
 
   def show
+    render json: @flashcard
   end
 
   def update
     if @flashcard.update(flashcard_params)
-      render :show
+      render json @flashcard
     else
       render_error
     end
@@ -22,7 +23,7 @@ class Api::V1::FlashcardsController < Api::V1::BaseController
     @flashcard.user = current_user
     authorize @flashcard
     if @flashcard.save
-      render :show, status: :created
+      render json: @flashcard, status: :created
     else
       render_error
     end
