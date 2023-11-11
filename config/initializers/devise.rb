@@ -310,4 +310,9 @@ Devise.setup do |config|
   # When set to false, does not sign a user in automatically after their password is
   # changed. Defaults to true, so a user is signed in automatically after changing a password.
   # config.sign_in_after_change_password = true
+  #
+  # Sessions solution from github.com/waiting-for-dev/devise-jwt/issues/235
+  config.warden do |warden|
+    warden.scope_defaults :user, store: false
+  end
 end
