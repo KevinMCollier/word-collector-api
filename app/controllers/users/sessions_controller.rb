@@ -15,5 +15,10 @@ module Users
     def respond_to_on_destroy
       head :no_content
     end
+
+    # def create
+    #   Rails.logger.info "Received params: #{params.inspect}"
+    #   super
+    # end
   end
 end
