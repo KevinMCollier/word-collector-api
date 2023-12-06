@@ -12,19 +12,21 @@ class Api::V1::FlashcardsController < Api::V1::BaseController
   end
 
   def update
-    if @flashcard.update(flashcard_params)
-      render json @flashcard
+    if @flashcard.update(flashcard_params.except(:tags))
+      associate_tags(@flashcard, flashcard_params[:tags])
+      render json @flashcard, include: :tags
     else
       render_error
     end
   end
 
   def create
-    @flashcard = Flashcard.new(flashcard_params)
+    @flashcard = Flashcard.new(flashcard_params.except(:tags))
     @flashcard.user = current_user
     authorize @flashcard
+    associate_tags(@flashcard, flashcard_params[:tags])
     if @flashcard.save
-      render json: @flashcard, status: :created
+      render json: @flashcard, include: :tags, status: :created
     else
       render_error
     end
@@ -42,11 +44,16 @@ class Api::V1::FlashcardsController < Api::V1::BaseController
   end
 
   def flashcard_params
-    params.require(:flashcard).permit(:title, :front_content, :back_content)
+    params.require(:flashcard).permit(:title, :front_content, :back_content, tags: [])
   end
 
   def render_error
     render json: { errors: @flashcard.errors.full_messages },
       status: :unprocessable_entity
+  end
+
+  def associate_tags(flashcard, tag_names)
+    return unless tag_names.present?
+    flashcard.tags = tag_names.map { |name| Tag.find_or_create_by(name: name) }
   end
 end
