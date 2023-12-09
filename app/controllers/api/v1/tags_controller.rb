@@ -1,8 +1,10 @@
-class Api::V1::TagsController < ApplicationController
+class Api::V1::TagsController < Api::V1::BaseController
+  acts_as_token_authentication_handler_for User
   before_action :set_tag, only: [:show]
 
   def index
-    @tags = current_user.flashcards.joins(:tags).select('tags.*').distinct
+    # @tags = current_user.flashcards.joins(:tags).select('tags.*').distinct
+    @tags = policy_scope(Tag)
     render json: @tags
   end
 

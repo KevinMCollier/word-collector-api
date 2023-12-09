@@ -6,6 +6,11 @@ class FlashcardPolicy < ApplicationPolicy
     end
   end
 
+  def index?
+    user.present?
+  end
+
+
   def show?
     record.user == user
   end
