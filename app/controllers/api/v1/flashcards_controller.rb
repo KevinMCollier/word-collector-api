@@ -2,6 +2,7 @@ class Api::V1::FlashcardsController < Api::V1::BaseController
   acts_as_token_authentication_handler_for User
   before_action :set_flashcard, only: [:show, :update, :destroy]
   def index
+    Rails.logger.info "Authorization Header: #{request.headers['Authorization']}"
     @flashcards = policy_scope(Flashcard)
     # The policy_scope method is part of Pundit and will be used for authorization.
     render json: @flashcards
