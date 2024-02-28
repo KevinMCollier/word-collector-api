@@ -46,3 +46,5 @@ class Api::V1::TagsController < Api::V1::BaseController
     params.require(:tag).permit(:name)
   end
 end
+
+# Just adding a comment here as a test.
